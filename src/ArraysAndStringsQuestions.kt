@@ -1,3 +1,5 @@
+import kotlin.math.absoluteValue
+
 fun main(){
     print("First Questions Tests:")
     println()
@@ -33,6 +35,21 @@ fun main(){
     }.forEach { print("$it,") }
     println()
     println("Expected: true,true,true,true,true,false")
+    println()
+    println()
+    print("Fifth Questions Tests:")
+    println()
+    val firstArray = arrayOf("","","","test","test","test","test")
+    val secondArray = arrayOf("","a","ba","test","tets","est","tests")
+
+    firstArray.mapIndexed {
+        index, s ->
+        oneEditAway(s,secondArray[index])
+    }.forEach {
+        print("$it,")
+    }
+    println()
+    println("Expected: true,true,false,true,false,true,true")
     println()
 }
 
@@ -124,4 +141,38 @@ fun isPalindrome(str :String): Boolean {
     val reversedSecondPart = secondPart.reversed()
 
     return firstPart == reversedSecondPart
+}
+
+
+//Question 5
+fun oneEditAway(s: String, s2: String): Boolean {
+    if((s.length - s2.length).absoluteValue > 1) return false
+    if (s == s2) return true
+
+    if(isRemoveEdit(s,s2) or isAdditionEdit(s,s2) or isChangeEdit(s,s2)) return true
+    return false
+}
+
+fun isChangeEdit(s: String, s2: String): Boolean {
+    if(s.length != s2.length) return false
+    var numOfChanges = 0
+    s.forEachIndexed {
+        index, c ->
+        if(c != s2[index]) numOfChanges += 1
+    }
+    return numOfChanges == 1
+}
+
+fun isRemoveEdit(s: String, s2: String): Boolean {
+    if(s.length - s2.length != 1) return false
+
+    s2.forEachIndexed { index, c ->
+        if(c != s[index])
+        { if (c != s[index + 1]) return false}
+    }
+    return true
+}
+
+fun isAdditionEdit(s: String, s2: String): Boolean {
+    return isRemoveEdit(s2,s)
 }
