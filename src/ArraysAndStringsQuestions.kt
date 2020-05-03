@@ -1,4 +1,5 @@
 import kotlin.math.absoluteValue
+import kotlin.text.StringBuilder
 
 fun main(){
     print("First Questions Tests:")
@@ -50,6 +51,26 @@ fun main(){
     }
     println()
     println("Expected: true,true,false,true,false,true,true")
+    println()
+    print("Sixth Questions Tests:")
+    println()
+
+    arrayOf("aaaAAAB","aBBbCCC","BbBbBBbBbb","","BaAAAAbbb","bbBBbbccc","bb").mapIndexed {
+            index, s ->
+        stringCompression(s)
+    }.forEach {
+        print("$it,")
+    }
+    println()
+    println("Expected: a3A3B,aB2bC3,BbBbBBbBbb,,BaA4b3,b2B2b2c3,bb")
+    println()
+
+    val matrix= arrayOf(arrayOf(1,2,3),
+             arrayOf(4,5,6),
+             arrayOf(7,8,9))
+    println(rotateMatrix(matrix))
+    println()
+    println("Expected: [[7,4,1], [8,5,2], [9,6,3]]")
     println()
 }
 
@@ -176,3 +197,45 @@ fun isRemoveEdit(s: String, s2: String): Boolean {
 fun isAdditionEdit(s: String, s2: String): Boolean {
     return isRemoveEdit(s2,s)
 }
+
+
+// Question 6
+
+fun stringCompression(s:String) : String {
+    val to_ret = kotlin.text.StringBuilder()
+    var prev_letter : Char = '%'
+    var counter = 1
+    s.forEachIndexed{ index,let ->
+        if (prev_letter == '%') {
+            prev_letter = let
+        }
+        else if( let == prev_letter ){
+            counter++
+            if (index == s.length - 1){
+                to_ret.append(prev_letter)
+                to_ret.append(counter)
+            }
+        } else {
+            to_ret.append(prev_letter)
+            if(counter == 1) {
+                prev_letter = let
+            }
+            else {
+                to_ret.append(counter)
+                counter = 1
+                prev_letter = let
+                if (index == s.length - 1) {
+                    to_ret.append(prev_letter)
+                }
+            }
+        }
+    }
+    return if (to_ret.length == s.length) s else to_ret.toString()
+}
+
+// Question 7
+
+fun rotateMatrix(matrix: Array<Array<Int>>): Array<Array<Int>>? {
+    return null
+}
+
